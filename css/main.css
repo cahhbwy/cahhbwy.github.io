@@ -1,0 +1,10 @@
+.bg_black{
+    background-color: black;
+    border-radius: 5px;
+    padding: 5px;
+}
+.bg_white{
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
