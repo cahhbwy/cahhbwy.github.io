@@ -43,3 +43,26 @@ canvas {
     background: url('../image/background.jpg');
     background-size: 40px 40px;
 }
+
+.btn-align {
+    height: 40px;
+    width: 80px;
+}
+
+.preview-box {
+    border: dashed 2px #ffc392;
+    margin: 15px 3px;
+}
+
+.preview-box h4 {
+    position: relative;
+    top: -20px;
+    width: 60px;
+    height: 20px;
+    background-color: white;
+}
+
+.preview-box div {
+    position: relative;
+    top: -20px;
+}

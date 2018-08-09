@@ -116,6 +116,7 @@ function change_color(color) {
         font_color = "#FFFFFF";
     }
     $("textarea").css("background-color", color).css("background-image", "").css("color", font_color);
+    preview.windowResized();
     preview.draw();
 }
 
@@ -124,6 +125,23 @@ function use_background_image() {
     font_color = image_font_color;
     $("textarea").css("background-image", "url(" + background_image + ")").css("background-size", "cover").css("color", font_color);
     preview.windowResized();
+    preview.draw();
+}
+
+function align_text(value) {
+    switch (value) {
+        case 'left':
+            align = "LEFT";
+            break;
+        case 'right':
+            align = "RIGHT";
+            break;
+        case 'center':
+            align = "CENTER";
+            break;
+        default:
+            break;
+    }
     preview.draw();
 }
 
