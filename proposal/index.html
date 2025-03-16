@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-indent: 2em;
+            font-size: larger;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-12">
+                <h1>Hello, world!</h1>
+            </div>
+            <hr/>
+            <p>With the ongoing persistence of the Covid-19 pandemic, there is a surging interest in health-related matters. The pandemic's presence has amplified personal health vigilance among individuals while concurrently broadening public insight into the community and international public health issues.</p>
+            <p>In tandem, Covid-19 has left significant imprints on numerous societal facets, encompassing economic sectors, social engagements, and mental health dimensions. These detrimental consequences have further magnified existing health challenges, amplifying their severity.</p>
+            <div id="chart_accumulate" style="height: 60vh;"></div>
+        </div>
+    </div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="data_for_visualization_2.js"></script>
+    <script>
+        function draw_accumulate() {
+            let myChart = echarts.init(document.getElementById('chart_accumulate'));
+            // let display_threshold = parseInt(document.getElementById("display_threshold").value);
+
+            let titles = Object.keys(data_for_visualization.data);
+            titles.sort(function(title_a, title_b) { return data_for_visualization.data[title_b]["sum"] - data_for_visualization.data[title_a]["sum"]; })
+
+            let top_k_value = 10;
+            let start_date = "2019-01-01";
+
+            let top_k_titles = titles.slice(0, top_k_value);
+            let start_idx = 0;
+            for (let i = 0; i < data_for_visualization.string_axis.length; ++i) {
+                if (data_for_visualization.string_axis[i] >= start_date) {
+                    start_idx = i;
+                    break;
+                }
+            }
+
+            let series = [];
+            for (let title in data_for_visualization.data) {
+                // if (data_for_visualization.data[title]["sum"] < display_threshold) {
+                //     continue;
+                // }
+                if (!top_k_titles.includes(title)) {
+                    continue;
+                }
+                series.push({
+                    name: title,
+                    data: data_for_visualization.data[title]["accumulate"].slice(start_idx),
+                    type: 'line',
+                    showSymbol: false,
+                    endLabel: {
+                        show: true,
+                        formatter: function (params) {
+                            return params.seriesName + ': ' + params.value;
+                        }
+                    },
+                    labelLayout: {
+                        moveOverlap: 'shiftY'
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    }
+                });
+            }
+            let option = {
+                animationThreshold: 3000,
+                animationDuration: 1000,
+                title: {
+                    text: 'Total Pageviews'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data_for_visualization.string_axis.slice(start_idx),
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: series
+            };
+            myChart.clear();
+            myChart.setOption(option, true);
+        }
+
+        draw_accumulate();
+
+    </script>
+</body>
+
+</html>
